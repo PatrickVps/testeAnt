@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,5 +28,6 @@ public class ExampleInstrumentedTest {
         PackageManager pm = appContext.getPackageManager();
 
         assertTrue(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA));
+        Log.e("tes","tes");
     }
 }
