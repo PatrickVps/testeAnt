@@ -1,6 +1,7 @@
 package com.sfeir.testant;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -22,5 +23,9 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.sfeir.testant", appContext.getPackageName());
+
+        PackageManager pm = appContext.getPackageManager();
+
+        assertFalse(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA));
     }
 }
