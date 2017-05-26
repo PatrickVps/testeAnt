@@ -4,10 +4,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('../release.keystore.jks')
-            storePassword "test123"
-            keyAlias "test123"
-            keyPassword "test123"
+            storeFile file('/Users/patrickvongpraseuth/AndroidStudioProjects/TestAnt/release.keystore.jks')
+            storePassword "test"
+            keyAlias "test"
+            keyPassword "test"
         }
     }
     compileSdkVersion 25
