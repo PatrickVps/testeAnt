@@ -28,6 +28,6 @@ public class ExampleInstrumentedTest {
         PackageManager pm = appContext.getPackageManager();
 
         assertTrue(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA));
-        Log.e("tes","te");
+        Log.e("tes","tes");
     }
 }
