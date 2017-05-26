@@ -26,6 +26,6 @@ public class ExampleInstrumentedTest {
 
         PackageManager pm = appContext.getPackageManager();
 
-        assertFalse(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA));
+        assertTrue(pm.hasSystemFeature(PackageManager.FEATURE_CAMERA));
     }
 }
