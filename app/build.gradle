@@ -2,14 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
 
-    signingConfigs {
-        release {
-            storeFile file('/Users/patrickvongpraseuth/AndroidStudioProjects/TestAnt/release.keystore.jks')
-            storePassword "test"
-            keyAlias "test"
-            keyPassword "test"
-        }
-    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
@@ -22,7 +14,6 @@ android {
     }
     buildTypes {
         release {
-            signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
