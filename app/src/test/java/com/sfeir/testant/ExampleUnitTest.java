@@ -65,7 +65,7 @@ public class ExampleUnitTest {
 
         //good way to use mock
         Mockito.when(m.operation1()).thenReturn(-1);
-        assertNotEquals(-1, m.operation1());
+        assertEquals(-1, m.operation1());
 
 
 
