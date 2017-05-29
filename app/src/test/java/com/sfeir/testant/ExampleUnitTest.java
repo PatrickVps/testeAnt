@@ -1,6 +1,10 @@
 package com.sfeir.testant;
 
+import com.example.Operation;
+
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
 
@@ -13,5 +17,58 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
         assertEquals(4, 2 + 2);
+
+    }
+
+    @Test
+    public void testCalculator() throws Exception {
+
+        Operation op = new Operation();
+        assertEquals(3, op.addition());
+
+
+        /////////////////
+        /////////////////
+        //MOCK METHOD RETURN
+        Operation mock = Mockito.mock(Operation.class);
+        Mockito.when(mock.addition()).thenReturn(4);
+        assertEquals(4, mock.addition());
+
+        /////////////////
+        /////////////////
+        //MOCK SPECIFIC BEHAVIOUR FOR METHOD
+        Operation test = Mockito.spy(Operation.class);
+        Mockito.when(test.addition(1,1)).thenReturn(3);
+        assertEquals(3, test.addition(1,1));
+
+        //2,2 not spy
+        assertEquals(4, test.addition(2,2));
+
+        assertEquals(2, test.operation1());
+
+        /////////////////
+        /////////////////
+        //mock submethods
+        Operation s = Mockito.spy(Operation.class);
+        Mockito.doReturn(0).when(s).addition(); // utilisable que pour spy
+        Mockito.when(s.substraction()).thenReturn(0);
+        assertEquals(0, s.operation1());
+
+        /////////////////
+        /////////////////
+        //mock result of a main method
+        Operation m = Mockito.mock(Operation.class);
+        Mockito.when(m.addition()).thenReturn(1);
+        Mockito.when(m.substraction()).thenReturn(1);
+        //mocks below has no effects because only result count
+        assertNotEquals(2, m.operation1());
+
+        //good way to use mock
+        Mockito.when(m.operation1()).thenReturn(-1);
+        assertNotEquals(-1, m.operation1());
+
+
+
+
     }
 }

@@ -7,12 +7,15 @@ import android.net.wifi.WifiManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.telephony.TelephonyManager;
+import android.test.mock.MockContext;
 import android.util.Log;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
 
@@ -59,5 +62,13 @@ public class ExampleInstrumentedTest {
 
         assertEquals("\"SFEIR\"", name);
 
+
+        ////////////////
+        // MOCK METHOD RETURNED
+        ////////////////
+
+        WifiInfo test = Mockito.mock(WifiInfo.class);
+        Mockito.when(test.getBSSID()).thenReturn("SFEIRE");
+        assertEquals("SFEIRE", test.getBSSID());
     }
 }
