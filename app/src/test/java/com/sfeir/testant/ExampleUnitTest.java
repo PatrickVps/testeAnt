@@ -89,7 +89,7 @@ public class ExampleUnitTest {
 
 
         //return USA when france is called
-        WebserviceAPI mock = Mockito.spy(WebserviceAPI.class);
+        WebserviceAPI mock = Mockito.spy(new WebserviceAPI());
         Mockito.doReturn(mock.getCountry("USA")).when(mock).getCountry("FRANCE");
 
         assertEquals("United States of America", mock.getCountry("FRANCE").get(0).getName());
