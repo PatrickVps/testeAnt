@@ -1,10 +1,13 @@
 package com.sfeir.testant;
 
 import com.example.Operation;
+import com.example.ws.Response;
+import com.example.ws.WebserviceAPI;
 
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -67,8 +70,31 @@ public class ExampleUnitTest {
         Mockito.when(m.operation1()).thenReturn(-1);
         assertEquals(-1, m.operation1());
 
+    }
 
+
+    @Test
+    public void testWebservice(){
+
+        WebserviceAPI ws = new WebserviceAPI();
+
+        List<Response> test = ws.getCountry("FraNCE");
+        assertEquals("France", test.get(0).getName());
+
+        test = ws.getCountryFromISO2("FR");
+        assertEquals("France", test.get(0).getName());
+
+        test = ws.getCountryFromISO3("FRA");
+        assertEquals("France", test.get(0).getName());
+
+
+        //return USA when france is called
+        WebserviceAPI mock = Mockito.spy(WebserviceAPI.class);
+        Mockito.doReturn(mock.getCountry("USA")).when(mock).getCountry("FRANCE");
+
+        assertEquals("United States of America", mock.getCountry("FRANCE").get(0).getName());
 
 
     }
+
 }
