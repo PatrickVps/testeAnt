@@ -23,7 +23,7 @@ public class ExampleUnitTest {
 
     }
 
-    @Test
+//    @Test
     public void testCalculator() throws Exception {
 
         Operation op = new Operation();
@@ -73,7 +73,7 @@ public class ExampleUnitTest {
     }
 
 
-    @Test
+//    @Test
     public void testWebservice(){
 
         WebserviceAPI ws = new WebserviceAPI();

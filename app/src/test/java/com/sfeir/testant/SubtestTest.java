@@ -7,7 +7,7 @@ import org.junit.Test;
  */
 
 public class SubtestTest {
-    @Test
+//    @Test
     public void testOtherTest(){
         ExampleUnitTest test = new ExampleUnitTest();
         test.testWebservice();
