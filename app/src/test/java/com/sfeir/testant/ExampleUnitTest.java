@@ -64,7 +64,7 @@ public class ExampleUnitTest {
         Mockito.when(m.addition()).thenReturn(1);
         Mockito.when(m.substraction()).thenReturn(1);
         //mocks below has no effects because only result count
-        assertNotEquals(2, m.operation1());
+        assertNotSame(2, m.operation1());
 
         //good way to use mock
         Mockito.when(m.operation1()).thenReturn(-1);
