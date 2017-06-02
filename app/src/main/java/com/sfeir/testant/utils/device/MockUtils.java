@@ -7,8 +7,15 @@ package com.sfeir.testant.utils.device;
 
 public class MockUtils {
 
+
+    public MockUtils() {
+    }
+
     public static void mock(){
 
     }
 
+    public static void checkMockable(int addition) {
+
+    }
 }

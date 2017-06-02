@@ -2,8 +2,10 @@ package com.sfeir.testant.utils.device;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
+import android.provider.Settings;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -45,5 +47,18 @@ public class ConnexionUtils {
         setMobileDataEnabledMethod.setAccessible(true);
 
         setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
+    }
+
+    public static void airplane(Activity activity ){
+
+        //HS
+
+        try{
+            Process proc = Runtime.getRuntime()
+                    .exec(new String[]{ "su","-c", "settings put global airplane_mode_on 1", "am broadcast -a android.intent.action.AIRPLANE_MODE" });
+            proc.waitFor();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

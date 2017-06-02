@@ -5,11 +5,15 @@ package com.sfeir.testant.server;
  */
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.provider.Settings;
 import android.text.format.Formatter;
 
 import com.sfeir.testant.tests.MyTestFramework;
+import com.sfeir.testant.utils.device.BootUtils;
 import com.sfeir.testant.utils.device.ConnexionUtils;
+import com.sfeir.testant.utils.device.InstallUtils;
 import com.sfeir.testant.utils.device.MockUtils;
 import com.sfeir.testant.utils.device.PermissionsUtils;
 import com.sfeir.testant.utils.device.ScreenUtils;
@@ -86,6 +90,15 @@ public class MyServer extends NanoHTTPD {
                     }
                 });
                 break;
+
+            case "/lock":
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ScreenUtils.lockScreen((Activity) context);
+                    }
+                });
+                break;
             // /parameter?name=bluetooth&active=false
             case "/parameter":
                 ((Activity) context).runOnUiThread(new Runnable() {
@@ -139,6 +152,80 @@ public class MyServer extends NanoHTTPD {
                     }
                 });
                 break;
+            case "/reboot":
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            BootUtils.rebootPhone(
+                                    (Activity) context, false);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+                break;
+
+//            case "/airplane":
+//                ((Activity) context).runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ConnexionUtils.airplane((Activity) context);
+//                    }
+//                });
+//                break;
+
+            case "/rotate":
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ScreenUtils.rotateScreen((Activity) context);
+                    }
+                });
+                break;
+
+
+            case "/alarms":
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BootUtils.getAlarms((Activity) context);
+                    }
+                });
+                break;
+
+
+            case "/updateApp":
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        InstallUtils.updateApp((Activity) context);
+                    }
+                });
+                break;
+
+
+            case "/removeApp":
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        InstallUtils.uninstallApp((Activity) context);
+                    }
+                });
+                break;
+
+            case "/launchService":
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        InstallUtils.launchService((Activity) context);
+                    }
+                });
+                break;
+
         }
 
         String msg = "<html><body><h1>Hello server</h1>\n";
