@@ -51,7 +51,7 @@ public class ExampleUnitTest {
 
         /////////////////
         /////////////////
-        //mock submethods
+        //mockMethod submethods
         Operation s = Mockito.spy(Operation.class);
         Mockito.doReturn(0).when(s).addition(); // utilisable que pour spy
         Mockito.when(s.substraction()).thenReturn(0);
@@ -59,14 +59,14 @@ public class ExampleUnitTest {
 
         /////////////////
         /////////////////
-        //mock result of a main method
+        //mockMethod result of a main method
         Operation m = Mockito.mock(Operation.class);
         Mockito.when(m.addition()).thenReturn(1);
         Mockito.when(m.substraction()).thenReturn(1);
         //mocks below has no effects because only result count
         assertNotSame(2, m.operation1());
 
-        //good way to use mock
+        //good way to use mockMethod
         Mockito.when(m.operation1()).thenReturn(-1);
         assertEquals(-1, m.operation1());
 
@@ -78,7 +78,7 @@ public class ExampleUnitTest {
 
         WebserviceAPI ws = new WebserviceAPI();
 
-        List<Response> test = ws.getCountry("FraNCE");
+        List<Response> test = ws.getCountries("FraNCE");
         assertEquals("France", test.get(0).getName());
 
         test = ws.getCountryFromISO2("FR");
@@ -90,9 +90,9 @@ public class ExampleUnitTest {
 
         //return USA when france is called
         WebserviceAPI mock = Mockito.spy(new WebserviceAPI());
-        Mockito.doReturn(mock.getCountry("USA")).when(mock).getCountry("FRANCE");
+        Mockito.doReturn(mock.getCountries("USA")).when(mock).getCountries("FRANCE");
 
-        assertEquals("United States of America", mock.getCountry("FRANCE").get(0).getName());
+        assertEquals("United States of America", mock.getCountries("FRANCE").get(0).getName());
 
 
     }

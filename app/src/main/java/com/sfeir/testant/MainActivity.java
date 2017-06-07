@@ -11,8 +11,6 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     private MyServer server;
-    private static MockUtils mockUtils;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
