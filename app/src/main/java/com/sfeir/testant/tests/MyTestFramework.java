@@ -16,6 +16,9 @@ public class MyTestFramework {
 
     public static void runTest(String[] args) throws ClassNotFoundException,
             NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+
+        errors.clear();
+
         Class c = Class.forName(args[0]);
         Constructor constructor = c.getConstructor();
         Object testsClass = constructor.newInstance();

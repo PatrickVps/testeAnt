@@ -1,12 +1,16 @@
 package com.example.ws;
 
+import com.fasterxml.jackson.databind.util.ClassUtil;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit.RestAdapter;
+
 
 /**
  * Created by patrickvongpraseuth on 30/05/2017.
@@ -25,7 +29,17 @@ public class WebserviceAPI {
     }
 
 
-    public List<Response> getCountry(String country){
+    public String getCountryName(String country){
+
+        List<Response> list = getCountries(country);
+
+        list = convertToResponse(list);
+
+        return list.get(0).getName();
+    }
+
+
+    public List<Response> getCountries(String country){
 
         LinkedTreeMap test = githubService.country(country);
 
@@ -72,6 +86,14 @@ public class WebserviceAPI {
             list.add(model);
         }
         return list;
+    }
+
+
+    public static Response convertToResponse(String result) {
+
+        Response model = new Gson().fromJson(result, Response.class);
+
+        return model;
     }
 
 

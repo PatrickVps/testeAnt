@@ -9,7 +9,12 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.text.format.Formatter;
+import android.util.Log;
 
+import com.example.ws.Response;
+import com.example.ws.WebserviceAPI;
+import com.google.gson.Gson;
+import com.sfeir.testant.MainActivity;
 import com.sfeir.testant.tests.MyTestFramework;
 import com.sfeir.testant.utils.device.BootUtils;
 import com.sfeir.testant.utils.device.ConnexionUtils;
@@ -18,8 +23,14 @@ import com.sfeir.testant.utils.device.MockUtils;
 import com.sfeir.testant.utils.device.PermissionsUtils;
 import com.sfeir.testant.utils.device.ScreenUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import fi.iki.elonen.NanoHTTPD;
 
@@ -31,9 +42,14 @@ public class MyServer extends NanoHTTPD {
 
     private Context context;
 
+    public static MockUtils mocks;
+
+
     public MyServer(Context context) throws IOException {
         super(PORT);
         start();
+
+        mocks = new MockUtils();
 
         this.context = context;
 
@@ -43,23 +59,108 @@ public class MyServer extends NanoHTTPD {
         System.out.println( "\nRunning! Point your browers to http://"+ip+":8080/ \n" );
     }
 
+
+
+
+    public static List<Object> convertToGeneric(JSONObject json, String in) throws JSONException {
+//        {
+//            "in" : [
+//            {"class" : "java.lang.Integer", "value" : "1"},
+//            {"class" : "java.lang.String", "value" : "test"}
+//            ],
+//            "out" : [{
+//            "class" : "com.example.ws.Response",
+//                    "value" : {
+//                "name" : "India",
+//                        "alpha2_code" : "IN",
+//                        "alpha3_code" : "IND"
+//            }
+//        }]
+//        }
+
+        JSONArray teste = json.getJSONArray(in);
+
+        Object te;
+        Object modele = null;
+        List<Object> result = new ArrayList<>();
+
+        for (int i = 0 ; i< teste.length(); i++) {
+            te = teste.get(i);
+
+            try {
+                String value = ((JSONObject) te).get("value").toString();
+                String classe = ((JSONObject) te).getString("class");
+                modele = new Gson().fromJson(value, Class.forName(classe));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            result.add(modele);
+        }
+        return result;
+    }
+
+
+
     @Override
     public Response serve(final IHTTPSession session) {
 
+        super.serve(session);
+
+
+
+////        JSONObject json = null;
+////        try {
+////            json = new JSONObject((String)session.getQueryParameterString());
+////            JSONObject test = json.getJSONObject("out").getJSONObject("Response");
+////            WebserviceAPI.convertToResponse(test.toString());
+////
+////        } catch (JSONException e) {
+////            e.printStackTrace();
+////        }
+//
+
         switch (session.getUri()){
+
+            case "/mockMethodPost":
+                //EXAMPLE
+//                {
+//                    "class" : "com.example.ws.WebserviceAPI",
+//                        "method" : "getCountries",
+//                        "in" : [
+//                    {"class" : "java.lang.String", "value" : "FRANCE"}
+//                    ],
+//                    "out" : [{
+//                    "class" : "com.example.ws.Response",
+//                            "value" : {
+//                        "name" : "United States of America",
+//                                "alpha2_code" : "US",
+//                                "alpha3_code" : "USA"
+//                    }
+//                }]
+//                }
+                JSONObject json = null;
+                List<Object> args = null;
+                List<Object> results = null;
+                try {
+                    json = new JSONObject((String) session.getQueryParameterString());
+                    args = convertToGeneric(json, "in");
+                    results = convertToGeneric(json, "out");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    MockUtils.mockMethodPost(json.getString("class"),json.getString("method"), args.toArray(), results);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
             case "/runTests":
-                String[] array = {"com.sfeir.testant.tests.Test2Class"};
+                String[] array = {"com.sfeir.testant.tests.TestMockClass"};
                 try {
                     MyTestFramework.runTest(array);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
@@ -124,31 +225,35 @@ public class MyServer extends NanoHTTPD {
                                     session.getParms().get("mode"),
                                     Boolean.parseBoolean(session.getParms().get("active")));
 
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (NoSuchMethodException e) {
-                            e.printStackTrace();
-                        } catch (InvocationTargetException e) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        } catch (NoSuchFieldException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 });
                 break;
 
-            // /mock?class=WebserviceAPI&method=getCountry&args=FRANCE+LONDON&return=USA
-            case "/mock":
+            // /mockMethod?class=WebserviceAPI&method=getCountry&args=FRANCE+LONDON&return=USA
+            case "/mockMethod":
                 ((Activity) context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        /*MockUtils.mock(
-                                (Activity) context,
-                                session.getParms().get("name"),
-                                Boolean.parseBoolean(session.getParms().get("active")));
-                         */
+                        try {
+                            mocks.mockMethod(
+                                    session.getParms().get("class"),
+                                    session.getParms().get("method"),
+                                    session.getParms().containsKey("arg")?session.getParms().get("arg").split("\\+"):null,
+                                    session.getParms().get("result"));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                break;
+            case "/mockClean":
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mocks.clearMocks();
                     }
                 });
                 break;
