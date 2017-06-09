@@ -4,6 +4,10 @@
     <keyboard-shortcut first-keystroke="meta divide" />
     <keyboard-shortcut first-keystroke="shift meta period" />
   </action>
+  <action id="Macro.clean save actions">
+    <keyboard-shortcut first-keystroke="meta s" />
+  </action>
+  <action id="SaveAll" />
   <action id="SwitchApply">
     <keyboard-shortcut first-keystroke="ctrl alt enter" />
   </action>
