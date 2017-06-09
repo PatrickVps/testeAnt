@@ -30,10 +30,6 @@ public class BootUtils {
         }
     }
 
-    public static void upgradeOS(String version){}
-
-    public static void downgradeOS(String version){}
-
     public static void getAlarms(Activity activity){
 //        final String tag_alarm = "tag_alarm";
 //        Uri uri = Uri.parse("content://com.android.alarmclock/alarm");
