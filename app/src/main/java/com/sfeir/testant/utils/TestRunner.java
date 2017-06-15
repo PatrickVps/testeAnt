@@ -1,4 +1,4 @@
-package com.sfeir.testant.tests;
+package com.sfeir.testant.utils;
 
 
 /**
@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyTestFramework {
+public class TestRunner {
     private static List<String> errors = new ArrayList<String>();
 
     public static void runTest(String[] args) throws ClassNotFoundException,
@@ -28,19 +28,18 @@ public class MyTestFramework {
             try {
                 test.invoke(testsClass);
             } catch (Exception e) {
-                if(test !=null && e!=null && e.getCause()!=null && e.getCause().getStackTrace()!=null) {
+                if (test != null && e != null && e.getCause() != null && e.getCause().getStackTrace() != null) {
                     fail(test.getName() + " : \n" + e.getCause().getMessage() + "\n" + printArray(e.getCause().getStackTrace()));
                 }
             }
         }
-
         System.out.println("");
         System.out.println("-----");
 
-        if(errors.size() > 0) {
+        if (errors.size() > 0) {
             System.err.println(errors.size() + " test(s) in error on " + m.length + " tests run\n");
 
-            for(String failingTest : errors) {
+            for (String failingTest : errors) {
                 System.err.println(failingTest);
             }
         } else {
@@ -49,7 +48,7 @@ public class MyTestFramework {
     }
 
     public static void checkTrue(boolean condition) {
-        if(condition) {
+        if (condition) {
             success();
         } else {
             String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
@@ -59,7 +58,7 @@ public class MyTestFramework {
     }
 
     public static void checkEqual(int expected, int result) {
-        if(expected == result) {
+        if (expected == result) {
             success();
         } else {
             String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
@@ -80,7 +79,7 @@ public class MyTestFramework {
     private static String printArray(StackTraceElement[] stackTraceElement) {
         String result = "";
 
-        for(StackTraceElement line : stackTraceElement) {
+        for (StackTraceElement line : stackTraceElement) {
             result += line + "\n";
         }
 

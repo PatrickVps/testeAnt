@@ -1,7 +1,7 @@
 package com.sfeir.testant.tests;
 
-import static com.sfeir.testant.tests.MyTestFramework.checkEqual;
-import static com.sfeir.testant.tests.MyTestFramework.checkTrue;
+import static com.sfeir.testant.utils.TestRunner.checkEqual;
+import static com.sfeir.testant.utils.TestRunner.checkTrue;
 
 /**
  * Created by patrickvongpraseuth on 31/05/2017.
@@ -13,7 +13,7 @@ public class TestsClass {
         int var1 = 1;
         int var2 = 2;
 
-        int res = 2/0;
+        int res = 2 / 0;
 
         checkTrue(var2 > var1);
     }

@@ -1,15 +1,12 @@
 package com.example.ws;
 
-import com.fasterxml.jackson.databind.util.ClassUtil;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-import retrofit.RestAdapter;
+
+import retrofit2.Retrofit;
 
 
 /**
@@ -20,16 +17,16 @@ public class WebserviceAPI {
 
     private IWebservice githubService;
 
-    public WebserviceAPI(){
+    public WebserviceAPI() {
 
-        githubService = new RestAdapter.Builder()
-                .setEndpoint(IWebservice.ENDPOINT)
+        githubService = new Retrofit.Builder()
+                .baseUrl(IWebservice.ENDPOINT)
                 .build()
                 .create(IWebservice.class);
     }
 
 
-    public String getCountryName(String country){
+    public String getCountryName(String country) {
 
         List<Response> list = getCountries(country);
 
@@ -39,21 +36,21 @@ public class WebserviceAPI {
     }
 
 
-    public List<Response> getCountries(String country){
+    public List<Response> getCountries(String country) {
 
         LinkedTreeMap test = githubService.country(country);
 
-        List teste = ((List<Object>) ((LinkedTreeMap)test.get("RestResponse")).get("result"));
+        List teste = ((List<Object>) ((LinkedTreeMap) test.get("RestResponse")).get("result"));
 
         return convertToResponse(teste);
     }
 
 
-    public List<Response> getCountryFromISO2(String country){
+    public List<Response> getCountryFromISO2(String country) {
 
         LinkedTreeMap test = githubService.countryByISO2(country);
 
-        Object result = ((LinkedTreeMap)test.get("RestResponse")).get("result");
+        Object result = ((LinkedTreeMap) test.get("RestResponse")).get("result");
 
         List list = new ArrayList();
         list.add(result);
@@ -61,19 +58,17 @@ public class WebserviceAPI {
     }
 
 
-    public List<Response> getCountryFromISO3(String country){
+    public List<Response> getCountryFromISO3(String country) {
 
         LinkedTreeMap test = githubService.countryByISO3(country);
 
-        Object result = ((LinkedTreeMap)test.get("RestResponse")).get("result");
+        Object result = ((LinkedTreeMap) test.get("RestResponse")).get("result");
 
         List list = new ArrayList();
         list.add(result);
 
         return convertToResponse(list);
     }
-
-
 
 
     private List<Response> convertToResponse(List inputList) {
