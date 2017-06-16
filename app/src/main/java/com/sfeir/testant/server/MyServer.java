@@ -45,7 +45,7 @@ public class MyServer extends NanoHTTPD {
         WifiManager wm = (WifiManager) context.getSystemService(WIFI_SERVICE);
         String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
 
-        System.out.println("\nRunning! Point your browers to http://" + ip + ":8080/ \n");
+        System.out.println("\nServer Running at http://" + ip + ":8080/ \n");
     }
 
 
@@ -65,23 +65,23 @@ public class MyServer extends NanoHTTPD {
 //        }]
 //        }
 
-        JSONArray teste = json.getJSONArray(in);
+        JSONArray jsonArray = json.getJSONArray(in);
 
-        Object te;
-        Object modele = null;
+        Object jsonElement;
+        Object model = null;
         List<Object> result = new ArrayList<>();
 
-        for (int i = 0; i < teste.length(); i++) {
-            te = teste.get(i);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            jsonElement = jsonArray.get(i);
 
             try {
-                String value = ((JSONObject) te).get("value").toString();
-                String classe = ((JSONObject) te).getString("class");
-                modele = new Gson().fromJson(value, Class.forName(classe));
+                String value = ((JSONObject) jsonElement).get("value").toString();
+                String classe = ((JSONObject) jsonElement).getString("class");
+                model = new Gson().fromJson(value, Class.forName(classe));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            result.add(modele);
+            result.add(model);
         }
         return result;
     }
@@ -95,7 +95,11 @@ public class MyServer extends NanoHTTPD {
         switch (session.getUri()) {
 
             case "/runTests":
-                String[] array = {"com.sfeir.testant.tests.TestMockClass"};
+                String[] array = {
+                        "com.sfeir.testant.tests.TestAPIServiceClass",
+                        "com.sfeir.testant.tests.TestWebserviceAPIClass"
+                };
+
                 try {
                     TestRunner.runTest(array);
                 } catch (Exception e) {
@@ -127,7 +131,8 @@ public class MyServer extends NanoHTTPD {
                     @Override
                     public void run() {
                         try {
-                            mocks.mockMethod(
+                            mocks.setMock(
+                                    "get",
                                     session.getParms().get("class"),
                                     session.getParms().get("method"),
                                     session.getParms().containsKey("arg") ? session.getParms().get("arg").split("\\+") : null,
@@ -157,19 +162,13 @@ public class MyServer extends NanoHTTPD {
 //                                  }
 //                              }]
 //                }
-                JSONObject json = null;
-                List<Object> args = null;
-                List<Object> results = null;
                 try {
-                    json = new JSONObject((String) session.getQueryParameterString());
-                    args = convertToGeneric(json, "in");
-                    results = convertToGeneric(json, "out");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    JSONObject json = new JSONObject((String) session.getQueryParameterString());
+                    List<Object> args = convertToGeneric(json, "in");
+                    List<Object> results = convertToGeneric(json, "out");
 
-                try {
-                    MockUtils.mockMethodPost(json.getString("class"), json.getString("method"), args.toArray(), results);
+                    MockUtils.setMock("post", json.getString("class"), json.getString("method"), args.toArray(), results);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -177,28 +176,21 @@ public class MyServer extends NanoHTTPD {
 
 
             case "/mockCallBack":
-
-                json = null;
-                args = null;
-                results = null;
                 try {
-                    json = new JSONObject((String) session.getQueryParameterString());
-                    args = convertToGeneric(json, "in");
-                    results = convertToGeneric(json, "out");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    JSONObject json = new JSONObject((String) session.getQueryParameterString());
+                    List<Object> args = convertToGeneric(json, "in");
+                    List<Object> results = convertToGeneric(json, "out");
 
-                try {
-                    MockUtils.mockCallback(json.getString("class"), json.getString("method"), args.toArray(), results);
+                    MockUtils.setMock("callback", json.getString("class"), json.getString("method"), args.toArray(), results);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
         }
 
-        String msg = "<html><body><h1>Hello server</h1>\n";
-        msg += "<p>We serve " + session.getUri() + " !</p>";
+        String msg = "<html><body><h1>Call succeed</h1>\n";
+        msg += "<p>For " + session.getUri() + " !</p>";
         return new Response(msg + "</body></html>\n");
     }
 }

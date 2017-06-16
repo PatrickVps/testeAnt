@@ -1,6 +1,8 @@
 package com.example.callback;
 
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -12,14 +14,14 @@ import retrofit2.Response;
 public class MyCallBack<CountryResponse> implements Callback<CountryResponse> {
 
     //save for unit tests
-    private Response<CountryResponse> apiResponse;
+    private CountryResponse apiResponse;
 
     @Override
     public void onResponse(Call<CountryResponse> call, Response<CountryResponse> response) {
 
-        apiResponse = response;
+        apiResponse = response.body();
 
-        CountryResponse teste = response.body();
+        CountryResponse test = response.body();
 
         //DO STUFF WITH RESPONSE
     }
@@ -28,12 +30,10 @@ public class MyCallBack<CountryResponse> implements Callback<CountryResponse> {
     public void onFailure(Call call, Throwable t) {
     }
 
-    public Response<CountryResponse> getApiResponse() {
+    public CountryResponse getApiResponse() {
+        if (apiResponse instanceof ArrayList) {
+            return (CountryResponse) ((ArrayList) apiResponse).get(0);
+        }
         return apiResponse;
     }
-
-    public void setApiResponse(Response<CountryResponse> apiResponse) {
-        this.apiResponse = apiResponse;
-    }
-
 }
