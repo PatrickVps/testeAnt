@@ -1,6 +1,7 @@
 package com.sfeir.testant.utils;
 
 import com.google.gson.Gson;
+import com.sfeir.testant.server.MyJson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,41 +16,67 @@ import java.util.List;
 
 public class JsonConverter {
 
-    public static List<Object> convertToGeneric(JSONObject json, String in) throws JSONException {
-//        {
-//            "in" : [
-//            {"class" : "java.lang.Integer", "value" : "1"},
-//            {"class" : "java.lang.String", "value" : "test"}
-//            ],
-//            "out" : [{
-//            "class" : "com.example.ws.Response",
-//                    "value" : {
-//                "name" : "India",
-//                        "alpha2_code" : "IN",
-//                        "alpha3_code" : "IND"
-//            }
-//        }]
-//        }
+    /**
+     * Method transforming a String class to an instance class with its value
+     *
+     * @param list
+     * @return
+     * @throws JSONException
+     */
+    public static List<Object> convertToInstance(List<MyJson.MyArgument> list) throws JSONException {
 
-        JSONArray jsonArray = json.getJSONArray(in);
-
-        Object jsonElement;
-        Object model = null;
         List<Object> result = new ArrayList<>();
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            jsonElement = jsonArray.get(i);
-
+        for (MyJson.MyArgument arg : list) {
+            Object model = null;
             try {
-                String value = ((JSONObject) jsonElement).get("value").toString();
-                String classe = ((JSONObject) jsonElement).getString("class");
-                model = new Gson().fromJson(value, Class.forName(classe));
+                model = new Gson().fromJson(arg.getValue(), Class.forName(arg.getClassname()));
+                result.add(model);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            result.add(model);
         }
         return result;
     }
 
+
+    /**
+     * Method allowing to convert a json format input to our custom object @{@link MyJson}
+     *
+     * @param jsonIn
+     * @return
+     */
+    public static List<MyJson> convertJsonToObject(String jsonIn) {
+
+        List<MyJson> mockList = new ArrayList<>();
+        JSONArray jsonMock = new JSONArray();
+
+        try {
+            jsonMock = new JSONArray(jsonIn);
+        } catch (JSONException e) {
+            //if input is not an array, we create an array with one element
+            try {
+                JSONObject obj = new JSONObject(jsonIn);
+
+                jsonMock = new JSONArray();
+                jsonMock.put(obj);
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < jsonMock.length(); i++) {
+            try {
+                JSONObject result = jsonMock.getJSONObject(i);
+
+                //convert json to custom object
+                MyJson model = new Gson().fromJson(result.toString(), MyJson.class);
+
+                mockList.add(model);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return mockList;
+    }
 }

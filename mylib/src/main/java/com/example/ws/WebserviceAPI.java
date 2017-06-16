@@ -43,8 +43,6 @@ public class WebserviceAPI {
 
         Call<LinkedTreeMap> test = githubService.country(country);
 
-//        List teste = ((List<Object>) ((LinkedTreeMap) test.get("RestResponse")).get("result"));
-
         WebServiceCallBack callBack = new WebServiceCallBack();
         test.enqueue(callBack);
 
@@ -84,8 +82,6 @@ public class WebserviceAPI {
     public List<Response> getCountryFromISO3(String country) {
 
         Call<LinkedTreeMap> test = githubService.countryByISO3(country);
-
-//        Object result = ((LinkedTreeMap) test.get("RestResponse")).get("result");
 
         WebServiceCallBack callBack = new WebServiceCallBack();
         test.enqueue(callBack);

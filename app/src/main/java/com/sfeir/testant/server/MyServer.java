@@ -14,8 +14,6 @@ import com.sfeir.testant.utils.JsonConverter;
 import com.sfeir.testant.utils.MockUtils;
 import com.sfeir.testant.utils.TestRunner;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -56,7 +54,7 @@ public class MyServer extends NanoHTTPD {
 
             case "/runTests":
                 String[] array = {
-//                        "com.sfeir.testant.tests.TestAPIServiceClass",
+                        "com.sfeir.testant.tests.TestAPIServiceClass",
                         "com.sfeir.testant.tests.TestWebserviceAPIClass",
                         "com.sfeir.testant.tests.TestOperationClass"
                 };
@@ -87,46 +85,38 @@ public class MyServer extends NanoHTTPD {
                 break;
 
             case "/mockMethod":
-                //EXAMPLE
-//                {
-//                    "class" : "com.example.ws.WebserviceAPI",
-//                    "method" : "getCountries",
-//                    "in" : [
-//                              {"class" : "java.lang.String", "value" : "FRANCE"}
-//                    ],
-//                    "out" : [
-//                              {
-//                                  "class" : "com.example.ws.Response",
-//                                  "value" : {
-//                                            "name" : "United States of America",
-//                                            "alpha2_code" : "US",
-//                                            "alpha3_code" : "USA"
-//                                  }
-//                              }]
-//                }
-                try {
-                    JSONObject json = new JSONObject((String) session.getQueryParameterString());
-                    List<Object> args = JsonConverter.convertToGeneric(json, "in");
-                    List<Object> results = JsonConverter.convertToGeneric(json, "out");
 
-                    MockUtils.setMock(MockMethodEnum.METHOD, json.getString("class"), json.getString("method"), args.toArray(), results);
+                List<MyJson> mockList = JsonConverter.convertJsonToObject((String) session.getQueryParameterString());
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                for (MyJson json : mockList) {
+                    try {
+                        List<Object> args = JsonConverter.convertToInstance(json.getIn());
+                        List<Object> results = JsonConverter.convertToInstance(json.getOut());
+
+                        MockUtils.setMock(MockMethodEnum.METHOD, json.getClassname(), json.getMethod(), args.toArray(), results);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+
                 break;
 
 
             case "/mockCallBack":
-                try {
-                    JSONObject json = new JSONObject((String) session.getQueryParameterString());
-                    List<Object> args = JsonConverter.convertToGeneric(json, "in");
-                    List<Object> results = JsonConverter.convertToGeneric(json, "out");
 
-                    MockUtils.setMock(MockMethodEnum.CALLBACK, json.getString("class"), json.getString("method"), args.toArray(), results);
+                mockList = JsonConverter.convertJsonToObject((String) session.getQueryParameterString());
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                for (MyJson json : mockList) {
+                    try {
+                        List<Object> args = JsonConverter.convertToInstance(json.getIn());
+                        List<Object> results = JsonConverter.convertToInstance(json.getOut());
+
+                        MockUtils.setMock(MockMethodEnum.CALLBACK, json.getClassname(), json.getMethod(), args.toArray(), results);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
         }
@@ -135,4 +125,6 @@ public class MyServer extends NanoHTTPD {
         msg += "<p>For " + session.getUri() + " !</p>";
         return new Response(msg + "</body></html>\n");
     }
+
+
 }
