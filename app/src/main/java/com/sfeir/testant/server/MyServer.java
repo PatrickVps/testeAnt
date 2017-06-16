@@ -9,16 +9,14 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
 
-import com.google.gson.Gson;
+import com.sfeir.testant.enumeration.MockMethodEnum;
+import com.sfeir.testant.utils.JsonConverter;
 import com.sfeir.testant.utils.MockUtils;
 import com.sfeir.testant.utils.TestRunner;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -46,44 +44,6 @@ public class MyServer extends NanoHTTPD {
         String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
 
         System.out.println("\nServer Running at http://" + ip + ":8080/ \n");
-    }
-
-
-    public static List<Object> convertToGeneric(JSONObject json, String in) throws JSONException {
-//        {
-//            "in" : [
-//            {"class" : "java.lang.Integer", "value" : "1"},
-//            {"class" : "java.lang.String", "value" : "test"}
-//            ],
-//            "out" : [{
-//            "class" : "com.example.ws.Response",
-//                    "value" : {
-//                "name" : "India",
-//                        "alpha2_code" : "IN",
-//                        "alpha3_code" : "IND"
-//            }
-//        }]
-//        }
-
-        JSONArray jsonArray = json.getJSONArray(in);
-
-        Object jsonElement;
-        Object model = null;
-        List<Object> result = new ArrayList<>();
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            jsonElement = jsonArray.get(i);
-
-            try {
-                String value = ((JSONObject) jsonElement).get("value").toString();
-                String classe = ((JSONObject) jsonElement).getString("class");
-                model = new Gson().fromJson(value, Class.forName(classe));
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            result.add(model);
-        }
-        return result;
     }
 
 
@@ -132,7 +92,7 @@ public class MyServer extends NanoHTTPD {
                     public void run() {
                         try {
                             mocks.setMock(
-                                    "get",
+                                    MockMethodEnum.GET,
                                     session.getParms().get("class"),
                                     session.getParms().get("method"),
                                     session.getParms().containsKey("arg") ? session.getParms().get("arg").split("\\+") : null,
@@ -164,10 +124,10 @@ public class MyServer extends NanoHTTPD {
 //                }
                 try {
                     JSONObject json = new JSONObject((String) session.getQueryParameterString());
-                    List<Object> args = convertToGeneric(json, "in");
-                    List<Object> results = convertToGeneric(json, "out");
+                    List<Object> args = JsonConverter.convertToGeneric(json, "in");
+                    List<Object> results = JsonConverter.convertToGeneric(json, "out");
 
-                    MockUtils.setMock("post", json.getString("class"), json.getString("method"), args.toArray(), results);
+                    MockUtils.setMock(MockMethodEnum.POST, json.getString("class"), json.getString("method"), args.toArray(), results);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -178,10 +138,10 @@ public class MyServer extends NanoHTTPD {
             case "/mockCallBack":
                 try {
                     JSONObject json = new JSONObject((String) session.getQueryParameterString());
-                    List<Object> args = convertToGeneric(json, "in");
-                    List<Object> results = convertToGeneric(json, "out");
+                    List<Object> args = JsonConverter.convertToGeneric(json, "in");
+                    List<Object> results = JsonConverter.convertToGeneric(json, "out");
 
-                    MockUtils.setMock("callback", json.getString("class"), json.getString("method"), args.toArray(), results);
+                    MockUtils.setMock(MockMethodEnum.CALLBACK, json.getString("class"), json.getString("method"), args.toArray(), results);
 
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -47,30 +47,6 @@ public class TestRunner {
         }
     }
 
-    public static void checkTrue(boolean condition) {
-        if (condition) {
-            success();
-        } else {
-            String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-
-            fail(methodName + " : Condition not verified");
-        }
-    }
-
-    public static void checkEqual(int expected, int result) {
-        if (expected == result) {
-            success();
-        } else {
-            String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-
-            fail(methodName + " : Expected " + expected + " / Obtained " + result);
-        }
-    }
-
-    private static void success() {
-        System.out.print(".");
-    }
-
     private static void fail(String message) {
         System.out.print("F");
         errors.add(message);

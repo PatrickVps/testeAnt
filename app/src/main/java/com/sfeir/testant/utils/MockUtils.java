@@ -2,6 +2,7 @@ package com.sfeir.testant.utils;
 
 
 import com.example.callback.CallResponseMock;
+import com.sfeir.testant.enumeration.MockMethodEnum;
 
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -25,7 +26,36 @@ public class MockUtils {
         mocks = new HashMap<>();
     }
 
-    public static void setMock(String type, String name, String method, Object[] args, Object result) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+
+    public static Object getMock(String classe) {
+
+        if (mocks.containsKey(classe)) {
+            return mocks.get(classe);
+        }
+
+        Object realObject = null;
+
+        try {
+            Class c = Class.forName(classe);
+            Constructor constructor = c.getConstructor();
+            realObject = constructor.newInstance();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return realObject;
+    }
+
+    public static void clearMocks() {
+        mocks.clear();
+    }
+
+    public static void removeMock(String classe) {
+        mocks.remove(classe);
+    }
+
+
+    public static void setMock(MockMethodEnum type, String name, String method, Object[] args, Object result) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
         Class c = Class.forName(name);
         Class[] classes = new Class[0];
@@ -50,11 +80,11 @@ public class MockUtils {
             mock = Mockito.mock(c);
         }
 
-        if ("callback".equals(type)) {
+        if (type == MockMethodEnum.CALLBACK) {
             mockCallBack(lMethod, mock, args, result);
-        } else if ("get".equals(type)) {
+        } else if (type == MockMethodEnum.GET) {
             mockGet(lMethod, mock, args, result);
-        } else if ("post".equals(type)) {
+        } else if (type == MockMethodEnum.POST) {
             mockPost(lMethod, mock, args, result);
         }
 
@@ -98,35 +128,6 @@ public class MockUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    public static Object getMock(String classe) {
-
-        if (mocks.containsKey(classe)) {
-            return mocks.get(classe);
-        }
-
-        Object realObject = null;
-
-        try {
-            Class c = Class.forName(classe);
-            Constructor constructor = c.getConstructor();
-            realObject = constructor.newInstance();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return realObject;
-    }
-
-
-    public static void clearMocks() {
-        mocks.clear();
-    }
-
-    public static void removeMock(String classe) {
-        mocks.remove(classe);
     }
 
 }
