@@ -5,12 +5,14 @@ import com.example.callback.CallResponseMock;
 import com.sfeir.testant.enumeration.MockMethodEnum;
 
 import org.mockito.Mockito;
+import org.mockito.exceptions.misusing.WrongTypeOfReturnValue;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,30 +84,25 @@ public class MockUtils {
 
         if (type == MockMethodEnum.CALLBACK) {
             mockCallBack(lMethod, mock, args, result);
-        } else if (type == MockMethodEnum.GET) {
-            mockGet(lMethod, mock, args, result);
-        } else if (type == MockMethodEnum.POST) {
-            mockPost(lMethod, mock, args, result);
+        } else if (type == MockMethodEnum.METHOD) {
+            mockMethod(lMethod, mock, args, result);
         }
 
         mocks.put(name, mock);
     }
 
-    private static void mockGet(Method lMethod, Object mock, Object[] args, Object result) throws InvocationTargetException, IllegalAccessException {
-        try {
-            Mockito.when(lMethod.invoke(mock, args)).thenReturn(Integer.parseInt((String) result));
-        } catch (Exception e) {
-            try {
-                Mockito.when(lMethod.invoke(mock, args)).thenReturn(((String) result).replace("%20", " "));
-            } catch (Exception e2) {
-                Mockito.when(lMethod.invoke(mock, args)).thenReturn(result);
-            }
-        }
-    }
-
-    private static void mockPost(Method lMethod, Object mock, Object[] args, Object result) {
+    private static void mockMethod(Method lMethod, Object mock, Object[] args, Object result) {
         try {
             Mockito.when(lMethod.invoke(mock, args)).thenReturn(result);
+        } catch (WrongTypeOfReturnValue e) {
+            // exception due to the fact that method only want one object (not a list)
+            if (result instanceof ArrayList) {
+                try {
+                    Mockito.when(lMethod.invoke(mock, args)).thenReturn(((ArrayList) result).get(0));
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

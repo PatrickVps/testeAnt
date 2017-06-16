@@ -56,8 +56,9 @@ public class MyServer extends NanoHTTPD {
 
             case "/runTests":
                 String[] array = {
-                        "com.sfeir.testant.tests.TestAPIServiceClass",
-                        "com.sfeir.testant.tests.TestWebserviceAPIClass"
+//                        "com.sfeir.testant.tests.TestAPIServiceClass",
+                        "com.sfeir.testant.tests.TestWebserviceAPIClass",
+                        "com.sfeir.testant.tests.TestOperationClass"
                 };
 
                 try {
@@ -85,26 +86,7 @@ public class MyServer extends NanoHTTPD {
                 });
                 break;
 
-            // /mockMethod?class=WebserviceAPI&method=getCountry&args=FRANCE+LONDON&return=USA
             case "/mockMethod":
-                ((Activity) context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            mocks.setMock(
-                                    MockMethodEnum.GET,
-                                    session.getParms().get("class"),
-                                    session.getParms().get("method"),
-                                    session.getParms().containsKey("arg") ? session.getParms().get("arg").split("\\+") : null,
-                                    session.getParms().get("result"));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                break;
-
-            case "/mockMethodPost":
                 //EXAMPLE
 //                {
 //                    "class" : "com.example.ws.WebserviceAPI",
@@ -127,7 +109,7 @@ public class MyServer extends NanoHTTPD {
                     List<Object> args = JsonConverter.convertToGeneric(json, "in");
                     List<Object> results = JsonConverter.convertToGeneric(json, "out");
 
-                    MockUtils.setMock(MockMethodEnum.POST, json.getString("class"), json.getString("method"), args.toArray(), results);
+                    MockUtils.setMock(MockMethodEnum.METHOD, json.getString("class"), json.getString("method"), args.toArray(), results);
 
                 } catch (Exception e) {
                     e.printStackTrace();

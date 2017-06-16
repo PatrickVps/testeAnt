@@ -5,5 +5,5 @@ package com.sfeir.testant.enumeration;
  */
 
 public enum MockMethodEnum {
-    GET, POST, CALLBACK;
+    METHOD, CALLBACK;
 }

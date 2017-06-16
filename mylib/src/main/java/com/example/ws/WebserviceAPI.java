@@ -6,7 +6,9 @@ import com.google.gson.internal.LinkedTreeMap;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -21,6 +23,7 @@ public class WebserviceAPI {
 
         githubService = new Retrofit.Builder()
                 .baseUrl(IWebservice.ENDPOINT)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(IWebservice.class);
     }
@@ -38,9 +41,20 @@ public class WebserviceAPI {
 
     public List<Response> getCountries(String country) {
 
-        LinkedTreeMap test = githubService.country(country);
+        Call<LinkedTreeMap> test = githubService.country(country);
 
-        List teste = ((List<Object>) ((LinkedTreeMap) test.get("RestResponse")).get("result"));
+//        List teste = ((List<Object>) ((LinkedTreeMap) test.get("RestResponse")).get("result"));
+
+        WebServiceCallBack callBack = new WebServiceCallBack();
+        test.enqueue(callBack);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        List teste = ((List<Object>) ((LinkedTreeMap) (((LinkedTreeMap) callBack.getApiResponse()).get("RestResponse"))).get("result"));
 
         return convertToResponse(teste);
     }
@@ -48,9 +62,18 @@ public class WebserviceAPI {
 
     public List<Response> getCountryFromISO2(String country) {
 
-        LinkedTreeMap test = githubService.countryByISO2(country);
+        Call<LinkedTreeMap> test = githubService.countryByISO2(country);
 
-        Object result = ((LinkedTreeMap) test.get("RestResponse")).get("result");
+        WebServiceCallBack callBack = new WebServiceCallBack();
+        test.enqueue(callBack);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Object result = ((LinkedTreeMap) (((LinkedTreeMap) callBack.getApiResponse()).get("RestResponse"))).get("result");
 
         List list = new ArrayList();
         list.add(result);
@@ -60,9 +83,20 @@ public class WebserviceAPI {
 
     public List<Response> getCountryFromISO3(String country) {
 
-        LinkedTreeMap test = githubService.countryByISO3(country);
+        Call<LinkedTreeMap> test = githubService.countryByISO3(country);
 
-        Object result = ((LinkedTreeMap) test.get("RestResponse")).get("result");
+//        Object result = ((LinkedTreeMap) test.get("RestResponse")).get("result");
+
+        WebServiceCallBack callBack = new WebServiceCallBack();
+        test.enqueue(callBack);
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Object result = ((LinkedTreeMap) (((LinkedTreeMap) callBack.getApiResponse()).get("RestResponse"))).get("result");
 
         List list = new ArrayList();
         list.add(result);
