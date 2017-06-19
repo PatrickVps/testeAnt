@@ -52,6 +52,18 @@ public class MyServer extends NanoHTTPD {
 
         switch (session.getUri()) {
 
+            case "/runTest":
+                String[] arrayTmp = {
+                        session.getParms().get("testClass"),
+                };
+
+                try {
+                    TestRunner.runTest(arrayTmp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
             case "/runTests":
                 String[] array = {
                         "com.sfeir.testant.tests.TestAPIServiceClass",
@@ -99,7 +111,6 @@ public class MyServer extends NanoHTTPD {
                         e.printStackTrace();
                     }
                 }
-
                 break;
 
 
