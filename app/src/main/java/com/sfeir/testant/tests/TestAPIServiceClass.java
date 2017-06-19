@@ -7,6 +7,8 @@ import com.example.callback.MyCallBack;
 import com.sfeir.testant.server.MyServer;
 import com.sfeir.testant.utils.MockUtils;
 
+import java.lang.reflect.InvocationTargetException;
+
 import retrofit2.Call;
 
 import static org.junit.Assert.assertEquals;
@@ -18,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class TestAPIServiceClass {
 
 
-    public void mockCallback() throws InterruptedException {
+    public void mockCallback() throws InterruptedException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
         MockUtils mockList = MyServer.mocks;
         MyCallBack<CountryResponse> myCallBack = new MyCallBack();

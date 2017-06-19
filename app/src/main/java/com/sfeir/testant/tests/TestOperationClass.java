@@ -4,6 +4,8 @@ import com.example.Operation;
 import com.sfeir.testant.server.MyServer;
 import com.sfeir.testant.utils.MockUtils;
 
+import java.lang.reflect.InvocationTargetException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -12,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestOperationClass {
 
-    public void mockInjectionTest() {
+    public void mockInjectionTest() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
         MockUtils mockList = MyServer.mocks;
 

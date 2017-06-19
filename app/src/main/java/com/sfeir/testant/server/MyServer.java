@@ -50,6 +50,8 @@ public class MyServer extends NanoHTTPD {
 
         super.serve(session);
 
+        String response = "OK";
+
         switch (session.getUri()) {
 
             case "/runTest":
@@ -61,6 +63,7 @@ public class MyServer extends NanoHTTPD {
                     TestRunner.runTest(arrayTmp);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    response = e.toString();
                 }
                 break;
 
@@ -75,6 +78,7 @@ public class MyServer extends NanoHTTPD {
                     TestRunner.runTest(array);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    response = e.toString();
                 }
                 break;
 
@@ -109,6 +113,7 @@ public class MyServer extends NanoHTTPD {
 
                     } catch (Exception e) {
                         e.printStackTrace();
+                        response = e.toString();
                     }
                 }
                 break;
@@ -127,14 +132,26 @@ public class MyServer extends NanoHTTPD {
 
                     } catch (Exception e) {
                         e.printStackTrace();
+                        response = e.toString();
                     }
                 }
                 break;
         }
 
-        String msg = "<html><body><h1>Call succeed</h1>\n";
-        msg += "<p>For " + session.getUri() + " !</p>";
-        return new Response(msg + "</body></html>\n");
+        StringBuilder msg = new StringBuilder();
+        msg.append("<html><body><h1>Call succeed</h1>\n");
+        msg.append("<p>For " + session.getUri() + " !</p>");
+
+        List<String> errors = TestRunner.getErrors();
+        if (!errors.isEmpty()) {
+            for (String s : errors) {
+                msg.append("<p>" + s + "</p>");
+            }
+        } else {
+            msg.append("<p>" + response + "</p>");
+        }
+        msg.append("</body></html>\n");
+        return new Response(msg.toString());
     }
 
 

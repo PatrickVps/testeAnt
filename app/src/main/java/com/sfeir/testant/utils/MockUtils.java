@@ -29,7 +29,7 @@ public class MockUtils {
     }
 
 
-    public static Object getMock(String classe) {
+    public static Object getMock(String classe) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
         if (mocks.containsKey(classe)) {
             return mocks.get(classe);
@@ -37,14 +37,10 @@ public class MockUtils {
 
         Object realObject = null;
 
-        try {
-            Class c = Class.forName(classe);
-            Constructor constructor = c.getConstructor();
-            realObject = constructor.newInstance();
+        Class c = Class.forName(classe);
+        Constructor constructor = c.getConstructor();
+        realObject = constructor.newInstance();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return realObject;
     }
 
@@ -91,7 +87,7 @@ public class MockUtils {
         mocks.put(name, mock);
     }
 
-    private static void mockMethod(Method lMethod, Object mock, Object[] args, Object result) {
+    private static void mockMethod(Method lMethod, Object mock, Object[] args, Object result) throws InvocationTargetException, IllegalAccessException {
         try {
             Mockito.when(lMethod.invoke(mock, args)).thenReturn(result);
         } catch (WrongTypeOfReturnValue e) {
@@ -100,31 +96,26 @@ public class MockUtils {
                 try {
                     Mockito.when(lMethod.invoke(mock, args)).thenReturn(((ArrayList) result).get(0));
                 } catch (Exception e1) {
-                    e1.printStackTrace();
+                    throw e1;
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
 
     }
 
-    private static void mockCallBack(Method lMethod, Object mock, Object[] args, final Object result) {
+    private static void mockCallBack(Method lMethod, Object mock, Object[] args, final Object result) throws InvocationTargetException, IllegalAccessException {
 
-        try {
-            Mockito.when(lMethod.invoke(mock, args)).thenAnswer(new Answer<Object>() {
-                @Override
-                public Object answer(InvocationOnMock invocation) throws Throwable {
+        Mockito.when(lMethod.invoke(mock, args)).thenAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
 
-                    CallResponseMock<Object> call = new CallResponseMock<Object>(result);
+                CallResponseMock<Object> call = new CallResponseMock<Object>(result);
 
-                    return call;
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                return call;
+            }
+        });
     }
 
 }

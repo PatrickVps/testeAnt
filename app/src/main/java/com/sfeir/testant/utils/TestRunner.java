@@ -61,4 +61,8 @@ public class TestRunner {
 
         return result;
     }
+
+    public static List<String> getErrors() {
+        return errors;
+    }
 }
