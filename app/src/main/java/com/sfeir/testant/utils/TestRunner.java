@@ -17,33 +17,36 @@ public class TestRunner {
     public static void runTest(String[] args) throws ClassNotFoundException,
             NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
-        errors.clear();
+        for (String arg : args) {
 
-        Class c = Class.forName(args[0]);
-        Constructor constructor = c.getConstructor();
-        Object testsClass = constructor.newInstance();
-        Method[] m = c.getDeclaredMethods();
+            errors.clear();
 
-        for (Method test : m) {
-            try {
-                test.invoke(testsClass);
-            } catch (Exception e) {
-                if (test != null && e != null && e.getCause() != null && e.getCause().getStackTrace() != null) {
-                    fail(test.getName() + " : \n" + e.getCause().getMessage() + "\n" + printArray(e.getCause().getStackTrace()));
+            Class c = Class.forName(arg);
+            Constructor constructor = c.getConstructor();
+            Object testsClass = constructor.newInstance();
+            Method[] m = c.getDeclaredMethods();
+
+            for (Method test : m) {
+                try {
+                    test.invoke(testsClass);
+                } catch (Exception e) {
+                    if (test != null && e != null && e.getCause() != null && e.getCause().getStackTrace() != null) {
+                        fail(test.getName() + " : \n" + e.getCause().getMessage() + "\n" + printArray(e.getCause().getStackTrace()));
+                    }
                 }
             }
-        }
-        System.out.println("");
-        System.out.println("-----");
+            System.out.println("");
+            System.out.println("-----");
 
-        if (errors.size() > 0) {
-            System.err.println(errors.size() + " test(s) in error on " + m.length + " tests run\n");
+            if (errors.size() > 0) {
+                System.err.println(errors.size() + " test(s) in error on " + (m.length -1) + " tests run\n");
 
-            for (String failingTest : errors) {
-                System.err.println(failingTest);
+                for (String failingTest : errors) {
+                    System.err.println(failingTest);
+                }
+            } else {
+                System.out.println("All the tests pass.");
             }
-        } else {
-            System.out.println("All the tests pass.");
         }
     }
 

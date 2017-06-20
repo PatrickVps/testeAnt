@@ -9,7 +9,6 @@ import org.mockito.exceptions.misusing.WrongTypeOfReturnValue;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -29,19 +28,22 @@ public class MockUtils {
     }
 
 
-    public static Object getMock(String classe) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static Object getMock(String classe) throws Exception {
 
         if (mocks.containsKey(classe)) {
             return mocks.get(classe);
         }
+// NO MOCK
+//        Object realObject = null;
+//
+//        Class c = Class.forName(classe);
+//        Constructor constructor = null;
+//        constructor = c.getConstructor();
+//        realObject = constructor.newInstance();
+//
+//        return realObject;
 
-        Object realObject = null;
-
-        Class c = Class.forName(classe);
-        Constructor constructor = c.getConstructor();
-        realObject = constructor.newInstance();
-
-        return realObject;
+        throw new Exception("No mock for " + classe);
     }
 
     public static void clearMocks() {
