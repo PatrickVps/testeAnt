@@ -33,15 +33,6 @@ public class MockUtils {
         if (mocks.containsKey(classe)) {
             return mocks.get(classe);
         }
-// NO MOCK
-//        Object realObject = null;
-//
-//        Class c = Class.forName(classe);
-//        Constructor constructor = null;
-//        constructor = c.getConstructor();
-//        realObject = constructor.newInstance();
-//
-//        return realObject;
 
         throw new Exception("No mock for " + classe);
     }

@@ -14,8 +14,7 @@ import java.util.List;
 public class TestRunner {
     private static List<String> errors = new ArrayList<String>();
 
-    public static void runTest(String[] args) throws ClassNotFoundException,
-            NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public static void runTest(String[] args) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
         for (String arg : args) {
 
@@ -35,11 +34,10 @@ public class TestRunner {
                     }
                 }
             }
-            System.out.println("");
             System.out.println("-----");
 
             if (errors.size() > 0) {
-                System.err.println(errors.size() + " test(s) in error on " + (m.length -1) + " tests run\n");
+                System.err.println(errors.size() + " test(s) in error on " + (m.length - 1) + " tests run\n");
 
                 for (String failingTest : errors) {
                     System.err.println(failingTest);
@@ -51,7 +49,6 @@ public class TestRunner {
     }
 
     private static void fail(String message) {
-        System.out.print("F");
         errors.add(message);
     }
 

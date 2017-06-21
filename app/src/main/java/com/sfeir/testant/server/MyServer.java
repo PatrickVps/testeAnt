@@ -136,7 +136,13 @@ public class MyServer extends NanoHTTPD {
                     }
                 }
                 break;
+            default:
+                Response r = new Response("<html><body><h1>Cannot execute " + session.getUri() + "</h1></body></html>");
+                r.setStatus(Response.Status.METHOD_NOT_ALLOWED);
+                return r;
         }
+
+        Response.Status status = Response.Status.OK;
 
         StringBuilder msg = new StringBuilder();
         msg.append("<html><body><h1>Call succeed</h1>\n");
@@ -147,11 +153,16 @@ public class MyServer extends NanoHTTPD {
             for (String s : errors) {
                 msg.append("<p>" + s + "</p>");
             }
+            status = Response.Status.BAD_REQUEST;
         } else {
             msg.append("<p>" + response + "</p>");
         }
         msg.append("</body></html>\n");
-        return new Response(msg.toString());
+
+        Response responseHTTP = new Response(msg.toString());
+        responseHTTP.setStatus(status);
+
+        return responseHTTP;
     }
 
 
