@@ -13,7 +13,7 @@ import java.util.ArrayList;
 //                    "in" : [
 //                              {"class" : "java.lang.String", "value" : "FRANCE"}
 //                    ],
-//                    "out" : [
+//                    "out" :
 //                              {
 //                                  "classname" : "com.example.ws.Response",
 //                                  "value" : "{
@@ -21,12 +21,7 @@ import java.util.ArrayList;
 //                                            \"alpha2_code\" : \"US\",
 //                                            \"alpha3_code\" : \"USA\"
 //                                  }"
-//                              },
-//                              {
-//                                  "classname" : "java.lang.Integer",
-//                                  "value" : "6"
 //                              }
-//                          ]
 //                }
 
 public class MyJson {
@@ -34,7 +29,7 @@ public class MyJson {
     private String classname;
     private String method;
     private ArrayList<MyArgument> in;
-    private ArrayList<MyArgument> out;
+    private MyArgument out;
 
     public String getClassname() {
         return classname;
@@ -60,11 +55,11 @@ public class MyJson {
         this.in = in;
     }
 
-    public ArrayList<MyArgument> getOut() {
+    public MyArgument getOut() {
         return out;
     }
 
-    public void setOut(ArrayList<MyArgument> out) {
+    public void setOut(MyArgument out) {
         this.out = out;
     }
 

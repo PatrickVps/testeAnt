@@ -15,6 +15,7 @@ import com.sfeir.testant.utils.MockUtils;
 import com.sfeir.testant.utils.TestRunner;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -101,34 +102,30 @@ public class MyServer extends NanoHTTPD {
                 break;
 
             case "/mockMethod":
-
-                List<MyJson> mockList = JsonConverter.convertJsonToObject((String) session.getQueryParameterString());
-
-                for (MyJson json : mockList) {
-                    try {
-                        List<Object> args = JsonConverter.convertToInstance(json.getIn());
-                        List<Object> results = JsonConverter.convertToInstance(json.getOut());
-
-                        MockUtils.setMock(MockMethodEnum.METHOD, json.getClassname(), json.getMethod(), args.toArray(), results);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        response = e.toString();
-                    }
-                }
-                break;
-
-
             case "/mockCallBack":
 
-                mockList = JsonConverter.convertJsonToObject((String) session.getQueryParameterString());
+                MockMethodEnum currentEnum = MockMethodEnum.METHOD;
 
-                for (MyJson json : mockList) {
+                if ("/mockCallBack".equals(session.getUri())) {
+                    currentEnum = MockMethodEnum.CALLBACK;
+                }
+
+                List<Object> mockList = new ArrayList<>();
+
+                Object mockConverted = JsonConverter.convertJsonToObject(session.getQueryParameterString(), MyJson.class);
+
+                if (mockConverted != null && mockConverted instanceof List) {
+                    mockList = (List<Object>) mockConverted;
+                } else {
+                    mockList.add(mockConverted);
+                }
+                for (Object obj : mockList) {
+                    MyJson json = (MyJson) obj;
                     try {
-                        List<Object> args = JsonConverter.convertToInstance(json.getIn());
-                        List<Object> results = JsonConverter.convertToInstance(json.getOut());
+                        Object args = JsonConverter.convertToInstance(json.getIn());
+                        Object results = JsonConverter.convertToInstance(json.getOut());
 
-                        MockUtils.setMock(MockMethodEnum.CALLBACK, json.getClassname(), json.getMethod(), args.toArray(), results);
+                        MockUtils.setMock(currentEnum, json.getClassname(), json.getMethod(), args, results);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -136,6 +133,7 @@ public class MyServer extends NanoHTTPD {
                     }
                 }
                 break;
+
             default:
                 Response r = new Response("<html><body><h1>Cannot execute " + session.getUri() + "</h1></body></html>");
                 r.setStatus(Response.Status.METHOD_NOT_ALLOWED);

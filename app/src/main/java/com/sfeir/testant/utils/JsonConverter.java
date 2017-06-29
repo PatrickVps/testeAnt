@@ -2,7 +2,6 @@ package com.sfeir.testant.utils;
 
 import com.google.gson.Gson;
 import com.sfeir.testant.server.MyArgument;
-import com.sfeir.testant.server.MyJson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +10,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by patrickvongpraseuth on 16/06/2017.
  */
@@ -18,21 +18,30 @@ import java.util.List;
 public class JsonConverter {
 
     /**
-     * Method transforming a String class to an instance class with its value
+     * Caution : Recursive method
+     * <p>
+     * Generic method which convert a list or object to a list or object instance
      *
-     * @param list
+     * @param args
      * @return
      * @throws JSONException
      */
-    public static List<Object> convertToInstance(List<MyArgument> list) throws JSONException {
+    public static Object convertToInstance(Object args) throws JSONException {
 
-        List<Object> result = new ArrayList<>();
+        Object result = null;
 
-        for (MyArgument arg : list) {
-            Object model = null;
+        if (args instanceof List) {
+
+            result = new ArrayList<>();
+
+            for (Object arg : (List) args) {
+                ((List) result).add(convertToInstance(arg));
+            }
+        } else {
             try {
-                model = new Gson().fromJson(arg.getValue(), Class.forName(arg.getClassname()));
-                result.add(model);
+                MyArgument arg = (MyArgument) args;
+
+                result = new Gson().fromJson(arg.getValue(), Class.forName(arg.getClassname()));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -42,77 +51,43 @@ public class JsonConverter {
 
 
     /**
-     * Method allowing to convert a json format input to our custom object @{@link MyJson}
+     * Method allowing to convert a json format input to an object
      *
      * @param jsonIn
      * @return
      */
-    public static List<MyJson> convertJsonToObject(String jsonIn) {
-
-        List<MyJson> mockList = new ArrayList<>();
-        JSONArray jsonMock = new JSONArray();
-
+    public static Object convertJsonToObject(String jsonIn, Class classname) {
         try {
-            jsonMock = new JSONArray(jsonIn);
+            List<Object> mockList = new ArrayList<>();
+            JSONArray jsonMock = new JSONArray(jsonIn);
+
+            for (int i = 0; i < jsonMock.length(); i++) {
+                try {
+                    JSONObject result = jsonMock.getJSONObject(i);
+
+                    //convert json to custom object
+                    Object model = new Gson().fromJson(result.toString(), classname);
+
+                    mockList.add(model);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return mockList;
         } catch (JSONException e) {
-            //if input is not an array, we create an array with one element
+            //if input is not an array, we create an object
             try {
                 JSONObject obj = new JSONObject(jsonIn);
 
-                jsonMock = new JSONArray();
-                jsonMock.put(obj);
+                //convert json to custom object
+                Object model = new Gson().fromJson(obj.toString(), classname);
+
+                return model;
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }
         }
-
-        for (int i = 0; i < jsonMock.length(); i++) {
-            try {
-                JSONObject result = jsonMock.getJSONObject(i);
-
-                //convert json to custom object
-                MyJson model = new Gson().fromJson(result.toString(), MyJson.class);
-
-                mockList.add(model);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return mockList;
+        return null;
     }
 
-
-    public static List<MyArgument> convertJsonToObject2(String jsonIn) {
-
-        List<MyArgument> mockList = new ArrayList<>();
-        JSONArray jsonMock = new JSONArray();
-
-        try {
-            jsonMock = new JSONArray(jsonIn);
-        } catch (JSONException e) {
-            //if input is not an array, we create an array with one element
-            try {
-                JSONObject obj = new JSONObject(jsonIn);
-
-                jsonMock = new JSONArray();
-                jsonMock.put(obj);
-            } catch (JSONException e1) {
-                e1.printStackTrace();
-            }
-        }
-
-        for (int i = 0; i < jsonMock.length(); i++) {
-            try {
-                JSONObject result = jsonMock.getJSONObject(i);
-
-                //convert json to custom object
-                MyArgument model = new Gson().fromJson(result.toString(), MyArgument.class);
-
-                mockList.add(model);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return mockList;
-    }
 }

@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -51,14 +50,13 @@ public class CallerResponse implements Answer {
                     sb.append(current);
                 }
 
-                List<MyArgument> results = JsonConverter.convertJsonToObject2(sb.toString());
+                Object results = JsonConverter.convertJsonToObject(sb.toString(), MyArgument.class);
 
-                // Do normal input or output stream reading
+                Object test = JsonConverter.convertToInstance(results);
+
                 Log.e("tes", "ok");
 
-                List<Object> test = JsonConverter.convertToInstance(results);
-
-                return test.get(0);
+                return test;
             } else {
                 Log.e("tes", "ko");
             }
