@@ -72,7 +72,12 @@ public class MockUtils {
         }
 
         if (type == MockMethodEnum.CALLBACK) {
-            mockCallBack(lMethod, mock, args, result);
+
+            if (result != null && (result instanceof ArrayList && ((ArrayList) result).get(0) instanceof Answer)) {
+                mockCallBack(lMethod, mock, args, ((ArrayList) result).get(0));
+            } else {
+                mockCallBack(lMethod, mock, args, result);
+            }
         } else if (type == MockMethodEnum.METHOD) {
             mockMethod(lMethod, mock, args, result);
         }
@@ -100,15 +105,19 @@ public class MockUtils {
 
     private static void mockCallBack(Method lMethod, Object mock, Object[] args, final Object result) throws InvocationTargetException, IllegalAccessException {
 
-        Mockito.when(lMethod.invoke(mock, args)).thenAnswer(new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
+        if (result instanceof Answer) {
+            Mockito.when(lMethod.invoke(mock, args)).thenAnswer((Answer) result);
+        } else {
+            Mockito.when(lMethod.invoke(mock, args)).thenAnswer(new Answer<Object>() {
+                @Override
+                public Object answer(InvocationOnMock invocation) throws Throwable {
 
-                CallResponseMock<Object> call = new CallResponseMock<Object>(result);
+                    CallResponseMock<Object> call = new CallResponseMock<Object>(result);
 
-                return call;
-            }
-        });
+                    return call;
+                }
+            });
+        }
     }
 
 }
