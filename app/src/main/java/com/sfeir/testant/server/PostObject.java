@@ -4,7 +4,7 @@ package com.sfeir.testant.server;
  * Created by patrickvongpraseuth on 27/06/2017.
  */
 
-public class MyArgument {
+public class PostObject {
 
     private String classname;
     private String value;

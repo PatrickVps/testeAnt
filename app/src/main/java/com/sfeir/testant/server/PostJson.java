@@ -1,6 +1,7 @@
 package com.sfeir.testant.server;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by patrickvongpraseuth on 16/06/2017.
@@ -24,12 +25,13 @@ import java.util.ArrayList;
 //                              }
 //                }
 
-public class MyJson {
+public class PostJson {
 
     private String classname;
     private String method;
-    private ArrayList<MyArgument> in;
-    private MyArgument out;
+    private ArrayList<PostObject> in;
+    private PostObject out;
+    private List<PostObject> listOut;
 
     public String getClassname() {
         return classname;
@@ -47,22 +49,29 @@ public class MyJson {
         this.method = method;
     }
 
-    public ArrayList<MyArgument> getIn() {
+    public ArrayList<PostObject> getIn() {
         return in;
     }
 
-    public void setIn(ArrayList<MyArgument> in) {
+    public void setIn(ArrayList<PostObject> in) {
         this.in = in;
     }
 
-    public MyArgument getOut() {
+    public PostObject getOut() {
         return out;
     }
 
-    public void setOut(MyArgument out) {
+    public void setOut(PostObject out) {
         this.out = out;
     }
 
+    public List<PostObject> getListOut() {
+        return listOut;
+    }
+
+    public void setListOut(List<PostObject> listOut) {
+        this.listOut = listOut;
+    }
 }
 
 

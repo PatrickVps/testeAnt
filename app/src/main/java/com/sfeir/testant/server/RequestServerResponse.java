@@ -18,11 +18,11 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by patrickvongpraseuth on 28/06/2017.
  */
 
-public class CallerResponse implements Answer {
+public class RequestServerResponse implements Answer {
 
     private String urlResponse;
 
-    public CallerResponse(String url) {
+    public RequestServerResponse(String url) {
         urlResponse = url;
     }
 
@@ -50,7 +50,7 @@ public class CallerResponse implements Answer {
                     sb.append(current);
                 }
 
-                Object results = JsonConverter.convertJsonToObject(sb.toString(), MyArgument.class);
+                Object results = JsonConverter.convertJsonToObject(sb.toString(), PostObject.class);
 
                 Object test = JsonConverter.convertToInstance(results);
 

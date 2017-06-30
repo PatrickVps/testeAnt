@@ -18,7 +18,7 @@ public class TestRunner {
 
         for (String arg : args) {
 
-            errors.clear();
+            clearErrors();
 
             Class c = Class.forName(arg);
             Constructor constructor = c.getConstructor();
@@ -64,5 +64,9 @@ public class TestRunner {
 
     public static List<String> getErrors() {
         return errors;
+    }
+
+    public static void clearErrors() {
+        errors.clear();
     }
 }

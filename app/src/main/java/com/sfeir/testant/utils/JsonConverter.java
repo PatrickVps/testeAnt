@@ -1,7 +1,7 @@
 package com.sfeir.testant.utils;
 
 import com.google.gson.Gson;
-import com.sfeir.testant.server.MyArgument;
+import com.sfeir.testant.server.PostObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +39,7 @@ public class JsonConverter {
             }
         } else {
             try {
-                MyArgument arg = (MyArgument) args;
+                PostObject arg = (PostObject) args;
 
                 result = new Gson().fromJson(arg.getValue(), Class.forName(arg.getClassname()));
             } catch (ClassNotFoundException e) {

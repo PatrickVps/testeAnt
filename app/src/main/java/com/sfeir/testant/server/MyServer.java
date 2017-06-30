@@ -51,6 +51,8 @@ public class MyServer extends NanoHTTPD {
 
         super.serve(session);
 
+        TestRunner.clearErrors();
+
         String response = "OK";
 
         switch (session.getUri()) {
@@ -112,7 +114,7 @@ public class MyServer extends NanoHTTPD {
 
                 List<Object> mockList = new ArrayList<>();
 
-                Object mockConverted = JsonConverter.convertJsonToObject(session.getQueryParameterString(), MyJson.class);
+                Object mockConverted = JsonConverter.convertJsonToObject(session.getQueryParameterString(), PostJson.class);
 
                 if (mockConverted != null && mockConverted instanceof List) {
                     mockList = (List<Object>) mockConverted;
@@ -120,10 +122,10 @@ public class MyServer extends NanoHTTPD {
                     mockList.add(mockConverted);
                 }
                 for (Object obj : mockList) {
-                    MyJson json = (MyJson) obj;
+                    PostJson json = (PostJson) obj;
                     try {
                         Object args = JsonConverter.convertToInstance(json.getIn());
-                        Object results = JsonConverter.convertToInstance(json.getOut());
+                        Object results = JsonConverter.convertToInstance((json.getOut() == null ? json.getListOut() : json.getOut()));
 
                         MockUtils.setMock(currentEnum, json.getClassname(), json.getMethod(), args, results);
 

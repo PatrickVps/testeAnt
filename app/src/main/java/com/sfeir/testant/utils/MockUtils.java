@@ -80,7 +80,11 @@ public class MockUtils {
             mock = mocks.get(name);
         } else {
             //use default method when not mocked
-            mock = Mockito.spy(c.newInstance());
+            try {
+                mock = Mockito.spy(c.newInstance());
+            } catch (InstantiationException e) {
+                mock = Mockito.mock(c); // in case we want to instantiate an API Service interface restfull
+            }
         }
 
         if (type == MockMethodEnum.CALLBACK) {
@@ -94,7 +98,7 @@ public class MockUtils {
 
     private static void mockMethod(Method lMethod, Object mock, Object[] args, Object result) throws InvocationTargetException, IllegalAccessException {
         try {
-            Mockito.doReturn(result).when(lMethod).invoke(mock, args); // utilisable que pour spy
+            Mockito.when(lMethod.invoke(mock, args)).thenReturn(result); // utilisable que pour spy
 
         } catch (WrongTypeOfReturnValue e) {
             // exception due to the fact that method only want one object (not a list)

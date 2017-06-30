@@ -4,13 +4,8 @@ import com.example.callback.APIHelper;
 import com.example.callback.APIService;
 import com.example.callback.CountryResponse;
 import com.example.callback.MyCallBack;
-import com.sfeir.testant.enumeration.MockMethodEnum;
-import com.sfeir.testant.server.MyJson;
 import com.sfeir.testant.server.MyServer;
-import com.sfeir.testant.utils.JsonConverter;
 import com.sfeir.testant.utils.MockUtils;
-
-import java.util.List;
 
 import retrofit2.Call;
 
@@ -37,8 +32,8 @@ public class TestAPIServiceClass {
 //            ////////////////////
 //            //MOCK FOR THIS TEST
 //            ////////////////////
-//            List<MyJson> mockList2 = JsonConverter.convertJsonToObject("{\"classname\":\"com.example.callback.APIService\",\"method\":\"country\",\"in\":[{\"classname\":\"java.lang.String\",\"value\":\"FRANCE\"}],\"out\":[{\"classname\":\"com.example.callback.CountryResponse\",\"value\":\"{\\\"RestResponse\\\" : { \\\"messages\\\":[], \\\"result\\\" : [{\\\"name\\\": \\\"India\\\",\\\"alpha2_code\\\":\\\"IN\\\",\\\"alpha3_code\\\":\\\"IND\\\"}]}}\"}]}");
-//            for (MyJson json : mockList2) {
+//            List<PostJson> mockList2 = JsonConverter.convertJsonToObject("{\"classname\":\"com.example.callback.APIService\",\"method\":\"country\",\"in\":[{\"classname\":\"java.lang.String\",\"value\":\"FRANCE\"}],\"out\":[{\"classname\":\"com.example.callback.CountryResponse\",\"value\":\"{\\\"RestResponse\\\" : { \\\"messages\\\":[], \\\"result\\\" : [{\\\"name\\\": \\\"India\\\",\\\"alpha2_code\\\":\\\"IN\\\",\\\"alpha3_code\\\":\\\"IND\\\"}]}}\"}]}");
+//            for (PostJson json : mockList2) {
 //                try {
 //                    List<Object> args = JsonConverter.convertToInstance(json.getIn());
 //                    List<Object> results = JsonConverter.convertToInstance(json.getOut());
