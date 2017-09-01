@@ -14,6 +14,14 @@
           <option name="url" value="https://github.com/Sfeir/antelop-testlib.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://git.almlab.sanofi.com/mymeetings/mymeetings_front_android.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="http://git.almlab.sanofi.com" />
+          <option name="userName" value="E0337931" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="$USER_HOME$/AndroidStudioProjects" />
