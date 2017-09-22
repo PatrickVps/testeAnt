@@ -4,6 +4,7 @@
       <mapping pattern="test" type="PLAIN_TEXT" />
       <mapping ext="bks" type="PLAIN_TEXT" />
       <mapping ext="aar" type="PLAIN_TEXT" />
+      <mapping pattern="config" type="Properties" />
     </extensionMap>
   </component>
 </application>
