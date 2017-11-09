@@ -4,7 +4,6 @@
       <mapping pattern="test" type="PLAIN_TEXT" />
       <mapping ext="bks" type="PLAIN_TEXT" />
       <mapping ext="aar" type="PLAIN_TEXT" />
-      <mapping ext="ttf" type="PLAIN_TEXT" />
       <mapping pattern="config" type="Properties" />
       <mapping pattern="tabbar_font" type="XML" />
     </extensionMap>
