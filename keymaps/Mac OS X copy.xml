@@ -3,6 +3,7 @@
     <keyboard-shortcut first-keystroke="meta slash" />
     <keyboard-shortcut first-keystroke="meta divide" />
     <keyboard-shortcut first-keystroke="shift meta period" />
+    <keyboard-shortcut first-keystroke="shift meta colon" />
   </action>
   <action id="Macro.clean save actions">
     <keyboard-shortcut first-keystroke="meta s" />
