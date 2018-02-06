@@ -6,6 +6,7 @@
       <mapping ext="bks" type="PLAIN_TEXT" />
       <mapping ext="aar" type="PLAIN_TEXT" />
       <mapping pattern="config" type="Properties" />
+      <mapping ext="sqlite" type="SQL" />
       <mapping pattern="tabbar_font" type="XML" />
     </extensionMap>
   </component>
