@@ -1,0 +1,9 @@
+<application>
+  <component name="ParameterNameHintsSettings">
+    <blacklists>
+      <blacklist language="Kotlin">
+        <added pattern="androidx.navigation.ui.NavigationUI.setupActionBarWithNavController(activity,navController)" />
+      </blacklist>
+    </blacklists>
+  </component>
+</application>
