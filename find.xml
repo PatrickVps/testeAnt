@@ -1,7 +1,7 @@
 <application>
   <component name="FindSettings">
-    <option name="customScope" value="Default Changelist" />
-    <option name="defaultScopeName" value="Default Changelist" />
-    <option name="SEARCH_SCOPE" value="Default Changelist" />
+    <option name="customScope" value="annex" />
+    <option name="defaultScopeName" value="annex" />
+    <option name="SEARCH_SCOPE" value="annex" />
   </component>
 </application>
