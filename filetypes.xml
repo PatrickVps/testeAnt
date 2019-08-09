@@ -1,13 +1,13 @@
 <application>
   <component name="FileTypeManager" version="17">
     <extensionMap>
-      <mapping ext="klib" type="ARCHIVE" />
       <mapping pattern="test_units_CA" type="JSON" />
       <mapping ext="realm" type="Native" />
       <mapping pattern="test_article_CA" type="PLAIN_TEXT" />
       <mapping pattern="test" type="PLAIN_TEXT" />
       <mapping ext="bks" type="PLAIN_TEXT" />
       <mapping ext="aar" type="PLAIN_TEXT" />
+      <mapping ext="keystore" type="PLAIN_TEXT" />
       <mapping ext="mockmaker" type="PLAIN_TEXT" />
       <mapping pattern="config" type="Properties" />
       <mapping pattern="tabbar_font" type="XML" />
