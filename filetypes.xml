@@ -6,7 +6,6 @@
       <mapping pattern="test_article_CA" type="PLAIN_TEXT" />
       <mapping pattern="test" type="PLAIN_TEXT" />
       <mapping ext="bks" type="PLAIN_TEXT" />
-      <mapping ext="aar" type="PLAIN_TEXT" />
       <mapping ext="keystore" type="PLAIN_TEXT" />
       <mapping ext="mockmaker" type="PLAIN_TEXT" />
       <mapping pattern="config" type="Properties" />
