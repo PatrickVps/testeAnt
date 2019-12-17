@@ -1,5 +1,5 @@
 <application>
-  <component name="EditorSettings">
-    <option name="ARE_LINE_NUMBERS_SHOWN" value="true" />
+  <component name="CodeInsightSettings">
+    <EXCLUDED_PACKAGE NAME="java.util.logging.Level" />
   </component>
 </application>
