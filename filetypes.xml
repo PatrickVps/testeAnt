@@ -1,6 +1,7 @@
 <application>
   <component name="FileTypeManager" version="17">
     <extensionMap>
+      <mapping pattern="GHFlutter" type="Dart" />
       <mapping pattern="test_units_CA" type="JSON" />
       <mapping ext="realm" type="Native" />
       <mapping pattern="test_article_CA" type="PLAIN_TEXT" />
