@@ -1,8 +1,10 @@
 <application>
   <component name="FileTypeManager" version="17">
     <extensionMap>
+      <mapping pattern="GHFlutter" type="Dart" />
       <mapping ext="webp" type="Image" />
       <mapping pattern="test_units_CA" type="JSON" />
+      <mapping ext="main.kts" type="Kotlin" />
       <mapping ext="realm" type="Native" />
       <mapping pattern="test_article_CA" type="PLAIN_TEXT" />
       <mapping pattern="test" type="PLAIN_TEXT" />
@@ -21,7 +23,6 @@
       <mapping ext="tps" type="DBN-PSQL" />
       <mapping ext="trg" type="DBN-PSQL" />
       <mapping ext="vw" type="DBN-SQL" />
-      <mapping pattern="GHFlutter" type="Dart" />
     </extensionMap>
   </component>
 </application>
