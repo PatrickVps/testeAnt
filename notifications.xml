@@ -1,8 +1,10 @@
 <application>
   <component name="NotificationConfiguration">
+    <notification groupId="Android Gradle Upgrade Notification" displayType="NONE" shouldLog="false" />
     <notification groupId="Build sync orphan modules" displayType="NONE" shouldLog="false" />
     <notification groupId="Device File Explorer" shouldReadAloud="true" />
     <notification groupId="Gradle Notification Group" displayType="NONE" shouldLog="false" />
-    <notification groupId="IDE and Plugin Updates" displayType="STICKY_BALLOON" shouldLog="false" />
+    <notification groupId="IDE and Plugin Updates" displayType="NONE" shouldLog="false" />
+    <notification groupId="Kotlin plugin updates" displayType="NONE" shouldLog="false" />
   </component>
 </application>
