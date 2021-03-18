@@ -4,6 +4,8 @@
       <mapping pattern="GHFlutter" type="Dart" />
       <mapping ext="webp" type="Image" />
       <mapping pattern="test_units_CA" type="JSON" />
+      <mapping pattern="DetailLetterActivity" type="Kotlin" />
+      <mapping pattern="AddLetterTest" type="Kotlin" />
       <mapping ext="main.kts" type="Kotlin" />
       <mapping ext="realm" type="Native" />
       <mapping pattern="test_article_CA" type="PLAIN_TEXT" />
