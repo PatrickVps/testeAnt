@@ -42,9 +42,17 @@
           <option name="url" value="https://github.com/Sanofi/digitalcompanion-front-android.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://PatrickVg@bitbucket.org/waykonect/appholderandroid.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="http://bitbucket.org" />
+          <option name="userName" value="PatrickVg" />
+        </UrlAndUserName>
       </list>
     </option>
-    <option name="cloneParentDir" value="$USER_HOME$/git/sanofi" />
+    <option name="cloneParentDir" value="$USER_HOME$/git" />
   </component>
   <component name="Vcs.Log.App.Settings">
     <option name="SHOW_DIFF_PREVIEW" value="true" />
